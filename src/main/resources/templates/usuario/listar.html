@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <div th:replace="recursos/meta.html"></div>
+    <title>Lista de Usuarios</title>
+</head>
+<body>
+<div th:replace="recursos/aside.html"></div>
+<main class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-200 min-h-screen transition-all main">
+    <div th:replace="recursos/navbar.html"></div>
+    <div class="p-4 sm:p-6">
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+            <!-- Cabecera -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center px-6 pt-6 pb-4 bg-orange-600 text-white">
+                <div>
+                    <h3 class="text-xl font-bold">Listado de Usuarios</h3>
+                    <p class="text-sm text-orange-100">Se muestran todos los usuarios registrados.</p>
+                </div>
+                <a href="/usuario/nuevo">
+                    <button class="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-rose-600 px-6 font-medium text-white duration-500">
+                        <div class="translate-y-0 transition group-hover:-translate-y-[150%] ">Agregar Usuario</div>
+                        <div class="absolute translate-y-[150%] transition group-hover:translate-y-0 ">
+                            <svg width="20" height="20" viewBox="0 0 15 15" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg" class="h-6 w-6">
+                                <path d="M7.5 2V13M2 7.5H13" stroke="currentColor" stroke-width="2"
+                                      stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                    </button>
+                </a>
+
+            </div>
+
+            <!-- Tabla -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-center text-gray-700">
+                    <thead class="bg-orange-500 text-white text-sm uppercase">
+                    <tr>
+                        <th class="py-3 px-4 min-w-[50px]">ID</th>
+                        <th class="py-3 px-4 min-w-[120px]">Nombre</th>
+                        <th class="py-3 px-4 min-w-[120px]">Apellidos</th>
+                        <th class="py-3 px-4 min-w-[150px]">Minutos Acumulados</th>
+                        <th class="py-3 px-4 min-w-[150px]">Minutos Semana</th>
+                        <th class="py-3 px-4 min-w-[100px]">Historial</th>
+                        <th class="py-3 px-4 min-w-[160px]">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tr th:each="usuario : ${usuarios.content}" class="hover:bg-gray-100 transition">
+                        <td class="px-4 py-3" th:text="${usuario.id}"></td>
+                        <td class="px-4 py-3" th:text="${usuario.nombre}"></td>
+                        <td class="px-4 py-3" th:text="${usuario.apellido}"></td>
+                        <td class="px-4 py-3" th:text="${usuario.minutosAcumulados}"></td>
+                        <td class="px-4 py-3" th:text="${usuario.minutosSemana}"></td>
+                        <td class="px-4 py-3">
+                            <a th:href="@{/reportes/usuario/{id}(id=${usuario.id})}" class="text-blue-600 hover:text-blue-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mx-auto">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+                                </svg>
+                            </a>
+                        </td>
+                        <td class="px-4 py-3">
+                            <div class="flex justify-center gap-4">
+                                <a th:href="@{/usuario/editar/{id}(id=${usuario.id})}" title="Editar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-600 hover:text-green-800">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"/>
+                                    </svg>
+                                </a>
+                                <a th:href="@{/usuario/eliminar/{id}(id=${usuario.id})}" title="Eliminar"
+                                   onclick="return confirm('¿Seguro que quieres eliminar este usuario?')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-red-600 hover:text-red-800">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397M6.25 5.625a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0C10.91 2.544 10 3.529 10 4.709v.916"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="px-6 py-4 flex flex-col sm:flex-row justify-between items-center">
+                <p class="text-sm text-gray-600" th:text="'Total elementos: ' + ${usuarios.totalElements}"></p>
+                <div class="flex gap-4 mt-2 sm:mt-0">
+                    <a th:if="${paginaActual > 0}" th:href="@{/usuario(page=${paginaActual - 1})}" class="text-blue-600 hover:underline">Anterior</a>
+                    <span class="text-gray-800 text-sm" th:text="'Página ' + ${paginaActual + 1} + ' de ' + ${usuarios.totalPages}"></span>
+                    <a th:if="${paginaActual + 1 < usuarios.totalPages}" th:href="@{/usuario(page=${paginaActual + 1})}" class="text-blue-600 hover:underline">Siguiente</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

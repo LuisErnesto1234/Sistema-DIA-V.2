@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="recursos/meta.html"></div>
+    <title>Listar control del agua</title>
+    <style>
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="recursos/aside.html"></div>
+<main class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-200 min-h-screen transition-all main">
+    <div th:replace="recursos/navbar.html"></div>
+
+    <div class="p-4 md:p-6 animate-fadeInUp">
+        <div class="bg-white rounded-2xl shadow-lg border border-dashed border-gray-300 p-6">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800">Registro de Controles</h3>
+                    <p class="text-gray-600">Se muestran todos los controles de agua registrados</p>
+                </div>
+                <a href="/control/nuevo">
+                    <button class="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-rose-500 to-pink-600 px-6 font-semibold text-white shadow-md transition-all duration-500 ease-in-out transform hover:scale-105 hover:shadow-lg">
+                        <span class="transition-transform group-hover:-translate-y-[150%]">Controlar</span>
+                        <span class="absolute translate-y-[150%] transition-transform group-hover:translate-y-0">
+                        <svg width="25" height="25" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H9M15 5H17C18.1 5 19 5.9 19 7V9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14.9 20.3L12.7 20.8L13.2 18.6C13.2 18.4 13.3 18.2 13.4 18.1L17.5 14L19.5 12L21.5 14L19.5 16L15.4 20.1C15.3 20.2 15.1 20.3 14.9 20.3Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 5C9 3.9 9.9 3 11 3H13C14.1 3 15 3.9 15 5V7H9V5Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    </button>
+                </a>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl">
+                <table class="min-w-full table-auto border-collapse text-sm md:text-base">
+                    <thead class="bg-blue-800 text-white">
+                    <tr>
+                        <th class="py-3 px-4 text-center rounded-l-lg">ID</th>
+                        <th class="py-3 px-4 text-center">USUARIO</th>
+                        <th class="py-3 px-4 text-center">FECHA</th>
+                        <th class="py-3 px-4 text-center">HORA DE INICIO</th>
+                        <th class="py-3 px-4 text-center">HORA DE FIN</th>
+                        <th class="py-3 px-4 text-center">MINUTOS UTILIZADOS</th>
+                        <th class="py-3 px-4 text-center rounded-r-lg">ACCIONES</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="control : ${controlesPage.content}" class="border-b hover:bg-gray-50">
+                        <td class="py-3 px-4 text-center" th:text="${control.id}"></td>
+                        <td class="py-3 px-4 text-center" th:text="${control.usuario.nombre}"></td>
+                        <td class="py-3 px-4 text-center" th:text="${control.fechaRegistro}"></td>
+                        <td class="py-3 px-4 text-center" th:text="${control.horaInicio}"></td>
+                        <td class="py-3 px-4 text-center" th:text="${control.horaFin}"></td>
+                        <td class="py-3 px-4 text-center" th:text="${control.minutosUtilizados}"></td>
+                        <td class="py-3 px-4 text-center">
+                            <div class="flex justify-center items-center gap-4">
+                                <a th:href="@{/control/editar/{id}(id=${control.id})}" title="Editar">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600 hover:text-blue-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.86 4.49l1.69-1.69a1.88 1.88 0 112.65 2.65L6.83 19.82a4.5 4.5 0 01-1.9 1.13l-2.68.8.8-2.68a4.5 4.5 0 011.13-1.9L16.86 4.49zM16.86 4.49L19.5 7.12"/>
+                                    </svg>
+                                </a>
+                                <a th:href="@{/usuario/eliminar/{id}(id=${control.id})}" title="Eliminar"
+                                   onclick="return confirm('¿Seguro que quieres eliminar este control de agua?')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600 hover:text-red-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.74 9l-.35 9m-4.79 0L9.26 9m9.97-3.21c.34.05.68.11 1.02.17m-1.02-.17L18.16 19.67a2.25 2.25 0 01-2.24 2.08H8.08a2.25 2.25 0 01-2.24-2.08L4.77 5.79m14.46 0a48.1 48.1 0 00-3.48-.4m-12 .56c.34-.06.68-.11 1.02-.17m0 0a48.1 48.1 0 013.48-.4m7.5 0v-.92c0-1.18-.91-2.16-2.09-2.2a51.96 51.96 0 00-3.32 0c-1.18.04-2.09 1.02-2.09 2.2v.92m7.5 0a48.67 48.67 0 00-7.5 0"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Información y Paginación -->
+            <div class="mt-6 text-sm text-gray-600">
+                <p th:text="'Total elementos: ' + ${controlesPage.totalElements}"></p>
+                <p th:text="'Página ' + ${paginaActual + 1} + ' de ' + ${controlesPage.totalPages}"></p>
+
+                <div class="mt-3 flex flex-wrap gap-3">
+                    <a th:if="${paginaActual > 0}" th:href="@{/control(page=${paginaActual - 1})}" class="text-blue-600 hover:underline">Anterior</a>
+                    <a th:if="${paginaActual + 1 < controlesPage.totalPages}" th:href="@{/control(page=${paginaActual + 1})}" class="text-blue-600 hover:underline">Siguiente</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a th:href="@{/control/export/excel}">Exportar a Excel</a>
+    <a th:href="@{/control/export/pdf}">Exportar a PDF</a>
+    <a th:href="@{/usuario/pdf/2}">Exporta pdd</a>
+</main>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

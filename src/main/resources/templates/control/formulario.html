@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="recursos/meta.html"></div>
+    <title>Formulario Control</title>
+</head>
+<body>
+<div th:replace="recursos/aside.html"></div>
+<main class="w-full md:w-[calc(100%-256px)] md:ml-64 bg-gray-200 min-h-screen transition-all main">
+    <div th:replace="recursos/navbar.html"></div>
+    <div class="container mx-auto px-4 py-8">
+        <div class="p-6 md:p-8 lg:p-10 xl:p-12 bg-white rounded-xl shadow-lg">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center text-cyan-800 mb-6"
+                th:text="${control.id == null ? 'Nuevo Control' : 'Editar Control'}"></h2>
+
+            <form th:action="@{/control/guardar}" th:object="${control}" method="post" class="space-y-6">
+                <input type="hidden" th:field="*{id}" />
+
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Usuario -->
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-cyan-700">Usuario</label>
+                        <div class="relative">
+                            <select th:field="*{usuario.id}" class="w-full pl-10 py-3 border-2 border-cyan-500 rounded-xl bg-white focus:ring-2 focus:ring-cyan-500">
+                                <option th:each="usuario : ${usuarios}"
+                                        th:text="${usuario.nombre}"
+                                        th:value="${usuario.id}"
+                                        th:selected="${usuario.id == control.usuario.id}"></option>
+                            </select>
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            <div class="text-red-600 text-xs mt-1" th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario}"></div>
+                        </div>
+                    </div>
+
+                    <!-- Fecha -->
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-cyan-700">Fecha</label>
+                        <div class="relative">
+                            <input type="date" th:field="*{fechaRegistro}" class="w-full pl-10 py-3 border-2 border-cyan-500 rounded-xl bg-white focus:ring-2 focus:ring-cyan-500">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M3 9H21M7 3V5M17 3V5M6.2 21H17.8..." stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <div class="text-red-600 text-xs mt-1" th:if="${#fields.hasErrors('fechaRegistro')}" th:errors="*{fechaRegistro}"></div>
+                        </div>
+                    </div>
+
+                    <!-- Hora Inicio -->
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-cyan-700">Hora Inicio</label>
+                        <div class="relative">
+                            <input type="time" th:field="*{horaInicio}" class="w-full pl-10 py-3 border-2 border-cyan-500 rounded-xl bg-white focus:ring-2 focus:ring-cyan-500">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M12 6V12M16.24 16.24L12 12..." stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <div class="text-red-600 text-xs mt-1" th:if="${#fields.hasErrors('horaInicio')}" th:errors="*{horaInicio}"></div>
+                        </div>
+                    </div>
+
+                    <!-- Hora Fin -->
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-cyan-700">Hora Término</label>
+                        <div class="relative">
+                            <input type="time" th:field="*{horaFin}" class="w-full pl-10 py-3 border-2 border-cyan-500 rounded-xl bg-white focus:ring-2 focus:ring-cyan-500">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M12 6V12M16.24 16.24L12 12..." stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <div class="text-red-600 text-xs mt-1" th:if="${#fields.hasErrors('horaFin')}" th:errors="*{horaFin}"></div>
+                        </div>
+                    </div>
+
+                    <!-- Minutos Utilizados -->
+                    <div class="md:col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-cyan-700">Minutos Utilizados</label>
+                        <div class="relative">
+                            <input type="text" readonly th:field="*{minutosUtilizados}" class="w-full pl-10 py-3 border-2 border-cyan-500 rounded-xl bg-white focus:ring-2 focus:ring-cyan-500">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12,6a1,1,0,0,0-1,1v5a1,1,0,0,0..." />
+                            </svg>
+                            <div class="text-red-600 text-xs mt-1" th:if="${#fields.hasErrors('minutosUtilizados')}" th:errors="*{minutosUtilizados}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón -->
+                <div class="flex justify-center">
+                    <button type="submit"
+                            class="group relative inline-flex bg-sky-600 h-12 w-1/2 items-center justify-center overflow-hidden rounded-md px-6 font-medium text-white duration-500 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2">
+                        <div class="translate-y-0 transition group-hover:-translate-y-[150%]">
+                            <span th:text="${control.id == null ? 'Guardar Control' : 'Actualizar Control'}"></span>
+                        </div>
+                        <div class="absolute translate-y-[150%] transition group-hover:translate-y-0">
+                            <svg width="20" height="20" viewBox="0 0 15 15" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg" class="h-6 w-6">
+                                <path d="M7.5 2V13M2 7.5H13" stroke="currentColor" stroke-width="2"
+                                      stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<script th:src="@{/js/main.js}"></script>
+
+</body>
+</html>

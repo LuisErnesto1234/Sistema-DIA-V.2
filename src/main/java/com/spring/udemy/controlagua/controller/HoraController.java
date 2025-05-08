@@ -1,0 +1,20 @@
+package com.spring.udemy.controlagua.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
+@RestController
+public class HoraController {
+
+    @GetMapping("/api/hora")
+    public String obtenerHoraActual() {
+        LocalTime hora = LocalTime.now();
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("hh:mm a", Locale.of("es", "ES"));
+        return hora.format(formatoHora).toLowerCase(); // ejemplo: 11:15 a. m.
+    }
+}
+
