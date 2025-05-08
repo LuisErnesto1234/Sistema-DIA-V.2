@@ -10,11 +10,19 @@ import java.util.Locale;
 @RestController
 public class HoraController {
 
-    @GetMapping("/api/hora")
-    public String obtenerHoraActual() {
-        LocalTime hora = LocalTime.now();
-        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("hh:mm a", Locale.of("es", "ES"));
-        return hora.format(formatoHora).toLowerCase(); // ejemplo: 11:15 a. m.
-    }
+//    @GetMapping("/api/hora")
+//    public String obtenerHoraActual() {
+//        LocalTime hora = LocalTime.now();
+//        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("hh:mm a", Locale.of("es", "ES"));
+//        return hora.format(formatoHora).toLowerCase(); // ejemplo: 11:15 a. m.
+//    }
+
+        @GetMapping("/api/hora")
+        public String obtenerHoraActual() {
+            LocalTime hora = LocalTime.now();
+            // CORREGIDO: Locale.of(...) no existe → usar new Locale(...)
+            DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("hh:mm a", new Locale("es", "ES"));
+            return hora.format(formatoHora).toLowerCase(); // ejemplo: 11:15 a. m.
+        }
 }
 
