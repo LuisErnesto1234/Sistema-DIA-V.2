@@ -27,14 +27,12 @@ public class HoraController {
 //            DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("hh:mm a", new Locale("es", "ES"));
 //            return hora.format(formatoHora).toLowerCase(); // ejemplo: 11:15 a. m.
 //        }
-
-    @GetMapping("/api/hora")
-    public String obtenerHoraActual() {
-        ZoneId zonaLima = ZoneId.of("America/Lima");
-        LocalTime hora = LocalTime.now(Clock.system(zonaLima));
-        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("hh:mm a", new Locale("es", "PE"));
-        return hora.format(formatoHora).toLowerCase();
-    }
-
+@GetMapping("/api/hora")
+public String obtenerHoraActual() {
+    ZoneId zonaLima = ZoneId.of("America/Lima");
+    LocalTime hora = LocalTime.now(Clock.system(zonaLima));
+    DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("hh:mm a", new Locale("es", "PE"));
+    return hora.format(formatoHora).toLowerCase();
+}
 }
 
